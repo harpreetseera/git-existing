@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:calc_example/provider/bloc_provider.dart';
 import 'package:calc_example/bloc/calculationbloc.dart';
+
 class ButtonCreator extends StatelessWidget {
   String buttonText;
   Color buttonColor;
@@ -21,9 +22,9 @@ class ButtonCreator extends StatelessWidget {
       fontWeight = FontWeight.w300;
     } else
       fontWeight = FontWeight.w200;
- if (buttonText == "AC" ||
+    if (buttonText == "AC" ||
         buttonText == "+/-" ||
-        buttonText == "backspace" ) {
+        buttonText == "backspace") {
       buttonColor = Colors.grey[300];
     }
     if (buttonText == "0") {
@@ -35,27 +36,29 @@ class ButtonCreator extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
-    calcBloc =CalcBlocProvider.of(context).bloc;
+    calcBloc = CalcBlocProvider.of(context).bloc;
     return Expanded(
       flex: flex,
       child: Container(
         decoration: BoxDecoration(border: border),
         child: FlatButton(
           color: buttonColor,
-          child:buttonText=="backspace"? Container(
-            padding: EdgeInsets.all(18),
-            
-            child: Opacity(child: Image.asset("assets/backspace.png")
-            ,
-            opacity: 0.5,),
-          ) :Text(
-            buttonText,
-            style: TextStyle(
-              color: textColor,
-              fontSize: 30,
-              fontWeight: fontWeight,
-            ),
-          ),
+          child: buttonText == "backspace"
+              ? Container(
+                  padding: EdgeInsets.all(18),
+                  child: Opacity(
+                    child: Image.asset("assets/backspace.png"),
+                    opacity: 0.5,
+                  ),
+                )
+              : Text(
+                  buttonText,
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: 30,
+                    fontWeight: fontWeight,
+                  ),
+                ),
           onPressed: () {
             calcBloc.clickSink.add(buttonText);
           },
@@ -63,7 +66,4 @@ class ButtonCreator extends StatelessWidget {
       ),
     );
   }
-
-
 }
-

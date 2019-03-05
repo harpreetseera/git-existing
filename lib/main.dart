@@ -1,6 +1,12 @@
 import 'package:calc_example/ui/homepage.dart';
 import 'package:flutter/material.dart';
-void main()=> runApp(MyApp());
+import 'package:flutter/services.dart';
+void main(){
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Colors.black,
+  ));
+  runApp(MyApp());
+} 
 
 class MyApp extends StatelessWidget{
   @override
@@ -8,6 +14,7 @@ class MyApp extends StatelessWidget{
     return MaterialApp(
       title:'CAL C',
       home: HomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
