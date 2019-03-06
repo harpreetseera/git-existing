@@ -10,7 +10,6 @@ class CalcBlocProvider extends InheritedWidget{
   context.inheritFromWidgetOfExactType(CalcBlocProvider);
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) {
-    // TODO: implement updateShouldNotify
     return true;
   }
 }

@@ -12,7 +12,6 @@ class _HomePageState extends State<HomePage> {
   CalculationBloc calcBloc;
   @override
   void initState() {
-    // TODO: implement initState
     calcBloc = CalculationBloc();
     calcBloc.displaySink.add("0");
     super.initState();
