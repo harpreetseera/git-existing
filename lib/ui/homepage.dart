@@ -66,6 +66,8 @@ class _HomePageState extends State<HomePage> {
                                       fontSize: 70,
                                       fontWeight: FontWeight.w200),
                                  maxLines: 3,
+                                 maxFontSize: 70,
+                                 minFontSize: 20,
                                 );
                               },
                             ),

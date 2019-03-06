@@ -13,9 +13,9 @@ class MyApp extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title:'CAL C',
+      title:'Calculator-Beta',
       home: HomePage(),
       debugShowCheckedModeBanner: false,
-    );
+    ); 
   }
 }
