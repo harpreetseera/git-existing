@@ -6,6 +6,7 @@ class CalculationBloc {
   var result;
   bool dotClicked = false;
   bool equalToclicked = false;
+  bool doubleOperation = false;
   final StreamController<String> clickController = StreamController.broadcast();
   StreamController<String> displayController = StreamController.broadcast();
 
@@ -20,6 +21,7 @@ class CalculationBloc {
   }
 
   void calculate(String event) {
+    
     if (displayText == "0" &&
         event != "+" &&
         event != "-" &&
@@ -29,8 +31,13 @@ class CalculationBloc {
         event != "/" &&
         event != "+/-") {
       result = event;
-    } else
-      result = (displayText + event);
+    } else {
+      if (doubleOperation) {
+        result = event;
+        doubleOperation = false;
+      } else
+        result = (displayText + event);
+    }
     if (equalToclicked) {
       if (event == "+" ||
           event == "-" ||
@@ -42,11 +49,11 @@ class CalculationBloc {
       } else {
         displayText = "";
         equalToclicked = false;
-        dotClicked =false;
+        dotClicked = false;
       }
     }
     if (event == "+/-") {
-      dotClicked =false;
+      dotClicked = false;
       equalToclicked = false;
       if (displayText == "0") {
         result = "0";
@@ -57,7 +64,7 @@ class CalculationBloc {
       }
     }
     if (event == ".") {
-      dotClicked =true;
+      dotClicked = true;
 
       if (displayText.contains(".") == true) {
         result = (displayText);
@@ -65,7 +72,7 @@ class CalculationBloc {
         result = (displayText + event);
     }
     if (event == "backspace") {
-      dotClicked =false;
+      dotClicked = false;
       if (displayText != "0") {
         if (displayText == "Infinity" ||
             displayText == "infinity" ||
@@ -80,46 +87,30 @@ class CalculationBloc {
     }
     if (event == "AC") {
       result = "0";
-      dotClicked =false;
+      operation = null;
+      dotClicked = false;
     }
     if (event == "+" || event == "-" || event == "x" || event == "/") {
-      // displayText.replaceAll(new RegExp(r'+'), '');
-      // displayText.replaceAll(new RegExp(r'-'), '');
-      // displayText.replaceAll(new RegExp(r'X'), '');
-      // displayText.replaceAll(new RegExp(r'/'), '');
-      // displayText.replaceAll(new RegExp(r'='), '');
-      firstNo = double.parse(displayText);
-      // displaySink.add("0");
-      result = "0";
-      dotClicked =false;
-      operation = event;
+      if (operation != null) {
+        
+        equaltoOperation();
+        firstNo = double.parse(result.toString());
+        // displaySink.add(firstNo.toString());
+        // dotClicked = false;
+        operation = event;
+        doubleOperation = true;
+        // equaltoOperation();
+
+      } else {
+        firstNo = double.parse(displayText);
+        // displaySink.add("0");
+        result = "0";
+        dotClicked = false;
+        operation = event;
+      }
     }
     if (event == "=") {
-      displayText.replaceAll("=", "0");
-      result = displayText;
-      if (firstNo != null) {
-        equalToclicked = true;
-        secondNo = double.parse(displayText);
-        switch (operation) {
-          case '+':
-            result = (firstNo + secondNo);
-            break;
-          case "-":
-            result = firstNo - secondNo;
-            break;
-          case "x":
-            result = firstNo * secondNo;
-            break;
-          case "/":
-            result = firstNo / secondNo;
-            break;
-          default:
-        }
-        firstNo = null;
-        secondNo = null;
-        operation = null;
-        dotClicked =false;
-      }
+      equaltoOperation();
     }
 
     // if(double.parse(result.toString()) is double)
@@ -131,12 +122,11 @@ class CalculationBloc {
 
     int length = result.toString().length;
     if (result.toString().endsWith(".0")) {
-      if(!dotClicked){
-         if (!result.toString().startsWith("0.")) {
-        result = result.toString().substring(0, length - 2);
+      if (!dotClicked) {
+        if (!result.toString().startsWith("0.")) {
+          result = result.toString().substring(0, length - 2);
+        }
       }
-      }
-     
     }
 
     displaySink.add(result.toString());
@@ -147,5 +137,34 @@ class CalculationBloc {
   void dispose() {
     clickController.close();
     displayController.close();
+  }
+
+  void equaltoOperation() {
+    displayText.replaceAll("=", "0");
+    result = displayText;
+    if (firstNo != null)  {
+      equalToclicked = true;
+      secondNo = double.parse(displayText);
+      switch (operation) {
+        case '+':
+          result = (firstNo + secondNo);
+          break;
+        case "-":
+          result = firstNo - secondNo;
+          break;
+        case "x":
+          result = firstNo * secondNo;
+          break;
+        case "/":
+          result = firstNo / secondNo;
+          break;
+        default:
+        result = displayText;
+      }
+      firstNo = null;
+      secondNo = null;
+      operation = null;
+      dotClicked = false;
+    }
   }
 }

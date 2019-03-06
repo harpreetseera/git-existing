@@ -2,6 +2,7 @@ import 'package:calc_example/bloc/calculationbloc.dart';
 import 'package:calc_example/ui/button_creator.dart';
 import 'package:flutter/material.dart';
 import 'package:calc_example/provider/bloc_provider.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
@@ -48,14 +49,23 @@ class _HomePageState extends State<HomePage> {
                               initialData: "0",
                               stream: calcBloc.displayStream,
                               builder: (context, snapshot) {
-                              calcBloc.displayText =snapshot.data;
-                                return Text(
+                                calcBloc.displayText = snapshot.data;
+                                // return Text(
+                                //   snapshot.data,
+                                //   textAlign: TextAlign.end,
+                                //   style: TextStyle(
+                                //       color: Colors.white,
+                                //       fontSize: 70,
+                                //       fontWeight: FontWeight.w200),
+                                // ),
+                                return AutoSizeText(
                                   snapshot.data,
                                   textAlign: TextAlign.end,
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 70,
                                       fontWeight: FontWeight.w200),
+                                 maxLines: 3,
                                 );
                               },
                             ),
